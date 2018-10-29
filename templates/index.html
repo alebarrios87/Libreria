@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <title>Libreria</title>
+      <!-- Bootstrap Core CSS -->
+      <link href="{{ url_for('static', filename='bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+      <!-- Custom Fonts -->
+      <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+      <!-- Custom CSS -->
+      <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+   </head>
+   <body>
+      <div class="Contenedor">
+         <div class="row">
+            <div class="title col-md-12 text-center">
+               <h1>Proyecto Libreria</h1>
+            </div>
+         </div>
+         <div class="bienvenida row">
+            <div class="col-md-9">
+               <h3>
+               Bienvenido {{username}}</h>
+            </div>
+            <div class="col-md-3 text-right login">
+               {% if username %}
+               <a href="/logout">Logout</a>
+               {% else %}
+               <a href="/login">Login</a>
+               {% endif %}
+            </div>
+         </div>
+         <div class="row">
+            <div class="boton col-md-12">
+               <a href="/agregarPost" class="btn btn-primary">Agregar</a>
+            </div>
+         </div>
+         <div class="row">
+            {% block content %}
+            {% endblock %}
+         </div>
+      </div>
+   </body>
+</html>

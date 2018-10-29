@@ -1,0 +1,129 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="col-md-9 col-sm-9 col-xs-9">
+  <div class="row">
+    <div class="col-md-9 col-md-offset-4">
+      <h2>Agregar Nueva Baja</h2>
+    </div>
+  </div>
+  <br>
+  <form class="form-horizontal" action="/bajas/new/" method = "POST">
+    <div class="row">
+      <!-- INICIO col-md-9 -->
+      <div class="col-md-9 col-md-offset-1">
+        <div class="form-group">
+          <label for="razonsocial" class="col-sm-4 control-label">Razon Social</label>
+          <div class="col-sm-6">
+            <select name="razonsocial" class="form-control">
+              <option value="AA" selected> AA</option>
+              <option value="ARH" selected> ARH</option>
+              <option value="AS" selected> AS</option>
+          </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="sucursal" class="col-sm-4 control-label">Sucursal</label>
+          <div class="col-sm-6">
+            <select name="sucursal" class="form-control">
+              <option value="Arroyo Seco" selected>Arroyo Seco</option>
+              <option value="General Rodriguez" selected>General Rodriguez</option>
+              <option value="Mercedes" selected>Mercedes</option>
+              <option value="Cordoba" selected>Cordoba</option>
+              <option value="Neuquen" selected>Neuquen</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="Usuaria" class="col-sm-4 control-label">Empresa Usuaria</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="usuaria" id="usuaria">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="nombre" class="col-sm-4 control-label">Nombre</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="nombre" id="nombre">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="apellido" class="col-sm-4 control-label">Apellido</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="apellido" id="apellido">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cuit" class="col-sm-4 control-label">CUIL</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="cuit" id="cuit">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ingreso" class="col-sm-4 control-label">Fecha de Ingreso</label>
+          <div class="col-sm-6">
+            <input type="text" maxlength="50" name="date-ingreso" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="egreso" class="col-sm-4 control-label">Fecha de Egreso</label>
+          <div class="col-sm-6">
+            <input type="text" maxlength="50" name="date-egreso" class="form-control"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="baja" class="col-sm-4 control-label">Fecha de Baja</label>
+          <div class="col-sm-6">
+            <input type="text" maxlength="50" name="date-baja" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="remuneración" class="col-sm-4 control-label">Mejor Remuneración</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="remuneracion" id="remuneración">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="situacion" class="col-sm-4 control-label">Situación</label>
+          <div class="col-sm-6">
+            <select name="situacion" class="form-control" id="situacion">
+              <option value="Suspención de Tareas" selected>Suspención de Tareas</option>
+              <option value="Reubicado">Reubicado</option>
+              <option value="Renuncia">Renuncia</option>
+              <option value="Acuerdo Legal">Acuerdo Legal</option>
+              <option value="Sin cierre para Legales">Sin cierre para Legales</option>
+              <option value="Intercambio Telegráfico">Intercambio Telegráfico</option>
+            </select>
+          </div>
+        </div>
+         <div class="form-group desde">
+          <label for="desde" class="col-sm-4 control-label">Desde</label>
+          <div class="col-sm-6">
+            <input type="text" maxlength="50" name="date-desde" class="form-control"/>
+          </div>
+        </div>
+         <div class="form-group hasta">
+          <label for="hasta" class="col-sm-4 control-label">Hasta</label>
+          <div class="col-sm-6">
+            <input type="text" maxlength="50" name="date-hasta" class="form-control"/>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="comentarios" class="col-sm-4 control-label">Comentarios</label>
+          <div class="col-sm-6">
+            <textarea class="form-control" rows="5" name="comentarios" id="comentarios"></textarea>
+          </div>
+        </div>
+
+        <br>
+        <button type="submit" class="btn btn-default" id="submit" type="submit">Guardar</button> 
+        <br>        
+      </div>
+      <!-- FIN col-md-8 -->
+
+    </div>
+  </form>
+  
+
+</div>
+{% endblock %}

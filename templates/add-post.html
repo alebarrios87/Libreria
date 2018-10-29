@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+
+{% block content %}
+  <div class="row">
+
+    <div class="col-md-6 col-md-offset-3">
+      <h2>Agregar Comentario</h2>
+      <form method="post">
+        <p>Nombre y Apellido</p>
+        <input type="text" class="form-control" name="Nobreyapellido">
+        <br>
+        <p>Biografia</p>
+        <textarea name="Biografia" class="form-control" rows="5"></textarea>
+        <br>
+      
+        <button type="submit">Guardar</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

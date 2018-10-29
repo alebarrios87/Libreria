@@ -1,0 +1,36 @@
+{% extends "index.html" %} 
+
+{% block content %} 
+
+  
+  <div class="row text-center">
+    <h2>Estas seguro que quiere borrar este Autor?</h2>
+  </div>
+  <div class="row post">
+      <div class="col-md-6">
+        <h4>Nombre y Apellido: {{post.Nobreyapellido}}</h4>
+      </div>
+      <div class="col-md-6 text-right">
+        <h5>Fecha de Creación: {{post.Fecha_nacimiento}}</h5>
+      </div>
+	  <div class="col-md-6 text-right">
+        <h5>Autor: {{post.UserID}}</h5>
+      </div>
+      <div class="col-md-12">
+        <p>Biografia: {{post.Biografia}}</p>
+      </div>
+        
+    </div>
+
+  <br>
+ 
+  <form action="/Autor/eliminar/{{post.IdAutor}}" method = 'post'>
+    <button type="submit" class="btn btn-danger" id="submit" type="submit">Yes</button>
+    <a class="btn btn-primary" href="/" role="button">No</a>
+  </form>  
+ 
+  
+
+{% endblock %}
+
+

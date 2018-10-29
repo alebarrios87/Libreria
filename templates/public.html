@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+
+{% block content %}
+  {% for post in posts %}
+    <div class="row post">
+      <div class="col-md-6">
+        <h4>{{post.Nobreyapellido}}</h4>
+      </div>
+      <div class="col-md-6 text-right">
+        <h5>Fecha de Nacimiento: {{post.Fecha_nacimiento}}</h5>
+      </div>
+		<div class="col-md-6 text-right">
+        <h5>Autor: {{post.UserID}}</h5>
+      </div>
+      <div class="col-md-12">
+        <p>{{post.Biografia}}</p>
+      </div>
+      <div class="col-md-12 acciones">
+        <a href="/Autor/editar/{{post.IdAutor}}"><i class="fa fa-pencil fa-fw"></i>Editar</a>
+        <a href="/Autor/eliminar/{{post.IdAutor}}"><i class="fa fa-trash-o fa-fw"></i>Eliminar</a>
+      </div>
+        
+    </div>
+  {% endfor%}
+{% endblock %}
