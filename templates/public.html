@@ -1,25 +1,44 @@
 {% extends "index.html" %}
 
 {% block content %}
-  {% for post in posts %}
-    <div class="row post">
-      <div class="col-md-6">
-        <h4>{{post.Nobreyapellido}}</h4>
-      </div>
-      <div class="col-md-6 text-right">
-        <h5>Fecha de Nacimiento: {{post.Fecha_nacimiento}}</h5>
-      </div>
-		<div class="col-md-6 text-right">
-        <h5>Autor: {{post.UserID}}</h5>
-      </div>
-      <div class="col-md-12">
-        <p>{{post.Biografia}}</p>
-      </div>
-      <div class="col-md-12 acciones">
-        <a href="/Autor/editar/{{post.IdAutor}}"><i class="fa fa-pencil fa-fw"></i>Editar</a>
-        <a href="/Autor/eliminar/{{post.IdAutor}}"><i class="fa fa-trash-o fa-fw"></i>Eliminar</a>
-      </div>
-        
-    </div>
-  {% endfor%}
+
+<div class="container">
+		<hr class="linea">
+		</div>
+		
+		
+		<div class="container">
+			<div class ="row">
+				<div class ="col-md-12">
+					<img src="{{ url_for('static', filename='images/PersonaLee.jpg')}}" class="img-responsive center-block">
+				</div>
+			</div>
+		</div>
+		
+		<div id = "titulo2" class="container">
+			<h1 id = "titulo3">ABM Libreria</h1>
+		</div>
+		
+		<div class="container">
+			<div class ="row">
+				<div class ="col-md-4">
+					<img src="{{ url_for('static', filename='images/Autores.jpg')}}" class="img-responsive">
+									<a href="/autor" id = "titulo4" class="text-center">ABM Autores</a>
+				</div>
+				<div class ="col-md-4">
+					<img src="{{ url_for('static', filename='images/Libros.jpg')}}" class="img-responsive">
+					<h1 id = "titulo3" class="text-center">ABM Libros</h1>
+				<a href="www.anagrama-ed.es/Libros" target="_blank"
+				<! ---abre nueva pestaña ----->  >	<p id = "titulo4" class="text-center">www.anagrama-ed.es/Libros</p></a>
+				</div>
+				<div class ="col-md-4">
+					<img src="{{ url_for('static', filename='images/Generos.jpg')}}" class="img-responsive">
+					<h1 id = "titulo3" class="text-center">ABM Genero</h1>	
+					<a href="www.anagrama-ed.es/Genero" target="_blank" 
+					<! ---abre nueva pestaña ----->  > <p id = "titulo4" class="text-center" >www.anagrama-ed.es/Genero</p>	</a>			
+				</div>
+			</div>		
+		</div>		
+	
+
 {% endblock %}

@@ -9,7 +9,7 @@ body{
 }
 .bienvenida{
 	color: black;
-	background-color: #BBDEFB;
+	background-color: rgba(255, 255, 255, .7);
 	
 }
 .bienvenida .login{
@@ -23,9 +23,37 @@ body{
 
 }
 .post{
-	background-color: #ECEFF1;
+	background-color: rgba(255, 255, 255, .7);
 	padding: 10px;
 	margin: 2px;
 	margin-top: 5px;
 	border-radius: 10px;
+
+}
+#titulo{
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		color: darkred;
+		font-size: 70px;
+		background-color: rgba(255, 255, 255, .7);
+}
+
+#titulo2{
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif, cursive; 
+		color: darkred	;
+		font-size: 50px;
+		background-color: rgba(255, 255, 255, .7);
+		
+}
+
+#titulo3{
+		 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif, cursive;
+		color: darkblue;
+		font-size: 30px;
+}
+
+#titulo4{
+		font-family: 'Cabin',sans-serif;
+		color: blue;
+		font-size: 25px;
+		background-color: rgba(255, 255, 255, .7);
 }

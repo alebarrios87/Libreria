@@ -13,8 +13,13 @@ import datetime
 import hashlib
 import httplib2
 import requests
+import os
+
+IMAGE_FOLDER = os.path.join('static', 'people_photo')
 
 app = Flask(__name__)
+
+app.config['image'] = IMAGE_FOLDER
 
 CLIENT_ID = json.loads(
 		open('client_secrets.json', 'r').read())['web']['client_id']
@@ -40,14 +45,15 @@ def login():
 		if request.method == 'POST':
 			print ("dentro de POST login")
 			user = session.query(User).filter_by(
-				username = request.form['username']).first()
+				username = request.form['email']).first()
 
-			if user and valid_pw(request.form['username'],
+			if user and valid_pw(request.form['email'],
 								request.form['password'],
 								user.pw_hash):
 			
-				login_session['username'] = request.form['username']
-				return render_template('public.html', username=login_session['username'])
+				login_session['email'] = request.form['email']
+				
+				return render_template('public.html', username=login_session['email'])
 
 			else:
 				error = "Usuario no registrado!!!"
@@ -128,6 +134,8 @@ def gconnect():
 	login_session['username'] = data['name']
 	login_session['picture'] = data['picture']
 	login_session['email'] = data['email']
+	print login_session['email']
+
 
 	# user_id = getUserID(login_session['email'])
 	# if not user_id:
@@ -241,38 +249,50 @@ def eliminarItem(IdAutor):
 		if request.method == 'POST':
 			session.delete(post)
 			session.commit()
-			return redirect(url_for('showMain'))
+			return redirect(url_for('showAutor'))
 					 
 
 # Crear Post
-@app.route('/agregarPost', methods=['GET', 'POST'])
-def agregarPost():
+@app.route('/agregarAutor', methods=['GET', 'POST'])
+def agregarAutor():
 
 	if request.method == 'GET':
-		return render_template('add-post.html')
+		return render_template('add-autor.html')
 	else:
 		if request.method == 'POST':
 			post = Autor(
 					Nobreyapellido = request.form['Nobreyapellido'],
 					Biografia=request.form['Biografia'],
-					Fecha_nacimiento= datetime.datetime.now(),
+					Fecha_nacimiento= request.form['FechaNacimiento'],
 					UserID=login_session['email'])
 			session.add(post)
 			session.commit()
-			return redirect(url_for('showMain'))
+			return redirect(url_for('showAutor'))
 
 
-# Show all
+# Show main
 @app.route('/', methods=['GET'])
 @app.route('/public/', methods=['GET'])
 def showMain():
 	posts = session.query(Autor).all()
-	
-	if 'username' in login_session:
+
+	if 'email' in login_session:
 		username = login_session['username']
-		return render_template('public.html', posts = posts, username=username)	
-	else:
+		return render_template('public.html', posts = posts, username=username)
+	else:	
 		return render_template('public.html', posts = posts)
+
+# Show Autor
+@app.route('/', methods=['GET'])
+@app.route('/autor/', methods=['GET'])
+def showAutor():
+	posts = session.query(Autor).all()
+	
+	if 'email' in login_session:
+		username = login_session['username']
+		return render_template('autor.html', posts = posts, username=username)	
+	else:
+		return render_template('autor.html', posts = posts)
 
 if __name__ == '__main__':
 	app.secret_key = "secret key"
