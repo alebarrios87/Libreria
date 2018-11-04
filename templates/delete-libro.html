@@ -1,0 +1,36 @@
+{% extends "index.html" %} 
+
+{% block content %} 
+
+  
+  <div class="row text-center">
+    <h2 id = "titulo4">Estas seguro que quiere borrar este Libro?</h2>
+  </div>
+  <div class="row post">
+      <div class="col-md-6">
+        <h4>Titulo del libro: {{post.NombreLibro}}</h4>
+      </div>
+      <div class="col-md-6 text-right">
+        <h5>Fecha de creacion del libro: {{post.Fecha_creacion}}</h5>
+      </div>
+	  <div class="col-md-6 text-right">
+        <h5>Autor: {{post.UserID}}</h5>
+      </div>
+      <div class="col-md-12">
+        <p>Epigrafe: {{post.Epigrafe}}</p>
+      </div>
+        
+    </div>
+
+  <br>
+ 
+  <form action="/Libros/eliminar/{{post.IdLibro}}" method = 'post'>
+    <button type="submit" class="btn btn-danger" id="submit" type="submit">Yes</button>
+    <a class="btn btn-primary" href="/" role="button">No</a>
+  </form>  
+ 
+  
+
+{% endblock %}
+
+

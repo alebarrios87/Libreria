@@ -52,6 +52,7 @@ def login():
 								user.pw_hash):
 			
 				login_session['email'] = request.form['email']
+				login_session['username'] = request.form['email']
 				
 				return render_template('public.html', username=login_session['email'])
 
@@ -237,14 +238,14 @@ def registrar():
 			login_session['username'] = request.form['username']
 			return redirect(url_for('showMain'))
 
-# Delete post
+# Delete autor
 @app.route('/Autor/eliminar/<int:IdAutor>', methods=['GET', 'POST'])
-def eliminarItem(IdAutor):
+def eliminarAutor(IdAutor):
 
 	post = session.query(Autor).filter_by(IdAutor = IdAutor).one()
 
 	if request.method == 'GET':
-		return render_template('delete-post.html', post = post)
+		return render_template('delete-autor.html', post = post)
 	else:
 		if request.method == 'POST':
 			session.delete(post)
@@ -252,23 +253,72 @@ def eliminarItem(IdAutor):
 			return redirect(url_for('showAutor'))
 					 
 
-# Crear Post
+# Delete Libro
+@app.route('/Libros/eliminar/<int:IdLibro>', methods=['GET', 'POST'])
+def eliminarLibro(IdLibro):
+
+	post = session.query(Libros).filter_by(IdLibro = IdLibro).one()
+
+	if request.method == 'GET':
+		return render_template('delete-libro.html', post = post)
+	else:
+		if request.method == 'POST':
+			session.delete(post)
+			session.commit()
+			return redirect(url_for('showLibros'))
+	
+# Crear Autor
 @app.route('/agregarAutor', methods=['GET', 'POST'])
 def agregarAutor():
 
 	if request.method == 'GET':
-		return render_template('add-autor.html')
+		username = login_session['username']
+		return render_template('add-autor.html',username=username)
 	else:
 		if request.method == 'POST':
 			post = Autor(
 					Nobreyapellido = request.form['Nobreyapellido'],
 					Biografia=request.form['Biografia'],
-					Fecha_nacimiento= request.form['FechaNacimiento'],
+					Fecha_nacimiento= request.form['Fecha_nacimiento'],
 					UserID=login_session['email'])
 			session.add(post)
 			session.commit()
 			return redirect(url_for('showAutor'))
 
+# Crear Libro
+@app.route('/agregarLibro', methods=['GET', 'POST'])
+def agregarLibro():
+
+	if request.method == 'GET':
+		username = login_session['username']
+		return render_template('add-libros.html',username=username)
+	else:
+		if request.method == 'POST':
+			post = Libros(
+					NombreLibro = request.form['NombreLibro'],
+					Epigrafe=request.form['Epigrafe'],
+					Fecha_creacion= request.form['Fecha_creacion'],
+					UserID=login_session['email'])
+			session.add(post)
+			session.commit()
+			return redirect(url_for('showLibros'))
+# Crear Edicion
+@app.route('/agregarEdicion', methods=['GET', 'POST'])
+def agregarEdicion():
+
+	if request.method == 'GET':
+		username = login_session['username']
+		return render_template('add-edicion.html',username=username)
+	else:
+		if request.method == 'POST':
+			post = Libros(
+					IdLibro=request.form['IdLibro'],
+					IdAutor= request.form['IdAutor'],
+					Fecha_Edicion = request.form['Fecha_Edicion'],
+					UserID=login_session['email'])
+			session.add(post)
+			session.commit()
+			return redirect(url_for('showLibros'))
 
 # Show main
 @app.route('/', methods=['GET'])
@@ -293,6 +343,71 @@ def showAutor():
 		return render_template('autor.html', posts = posts, username=username)	
 	else:
 		return render_template('autor.html', posts = posts)
+
+# Show Libros
+@app.route('/', methods=['GET'])
+@app.route('/libros/', methods=['GET'])
+def showLibros():
+	posts = session.query(Libros).all()
+	
+	if 'email' in login_session:
+		username = login_session['username']
+		return render_template('libros.html', posts = posts, username=username)	
+	else:
+		return render_template('libros.html', posts = posts)
+
+# Show Edicion
+@app.route('/', methods=['GET'])
+@app.route('/edicion/', methods=['GET'])
+def showEdicion():
+	#posts = session.query(Libreria).all()
+
+	if 'email' in login_session:
+		username = login_session['username']
+		return render_template('construccion.html',username=username)
+		 #posts = posts,libros=libros,autor=autor)	
+	else:
+		return render_template('construccion.html')
+
+# Editar Autor
+@app.route('/Autor/editar/<int:IdAutor>', methods=['GET', 'POST'])
+def editarAutor(IdAutor):
+	post = session.query(Autor).filter_by(IdAutor = IdAutor).one()
+
+	if request.method == 'GET':
+		username = login_session['username']
+		return render_template('edit-autor.html', post = post,IdAutor = IdAutor, username=username)
+	else:
+		if request.method == 'POST':
+			print(IdAutor)
+			post = session.query(Autor).filter_by(IdAutor = IdAutor).one()
+			post.Nobreyapellido = request.form['Nobreyapellido'],
+			post.Biografia=request.form['Biografia'],
+			post.Fecha_nacimiento= request.form['Fecha_nacimiento'],
+			post.UserID=login_session['email'],
+			session.commit()
+			return redirect(url_for('showAutor'))
+
+# Editar Libros
+@app.route('/Libros/editar/<int:IdLibro>', methods=['GET', 'POST'])
+def editarLibros(IdLibro):
+	post = session.query(Libros).filter_by(IdLibro = IdLibro).one()
+
+	if request.method == 'GET':
+		username = login_session['username']
+		return render_template('edit-libros.html', post = post,IdLibro = IdLibro, username=username)
+	else:
+		if request.method == 'POST':
+			print(IdLibro)
+			post = session.query(Libros).filter_by(IdLibro = IdLibro).one()
+			post.NombreLibro = request.form['NombreLibro'],
+			post.Epigrafe=request.form['Epigrafe'],
+			post.Fecha_creacion= request.form['Fecha_creacion'],
+			post.UserID=login_session['email']
+			session.commit()
+			return redirect(url_for('showLibros'))
+
+
 
 if __name__ == '__main__':
 	app.secret_key = "secret key"

@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+
+{% block content %}
+  <div class="row">
+
+    <div class="col-md-6 col-md-offset-3">
+      <form method="post">
+         <h2 id = "titulo4">Editar el libro N°{{IdLibro}}</h2>
+        <p id = "titulo4">Titulo del libro</p>
+        <input value = "{{post.NombreLibro}}" type="text" class="form-control" name="NombreLibro">
+        <br>
+        <p id = "titulo4">Epigrafe</p>
+        <textarea name="Epigrafe" class="form-control" rows="5">{{post.Epigrafe}}</textarea>
+        <br>
+        <p id = "titulo4">Fecha de creacion del libro: 
+          <input value = "{{post.Fecha_creacion}}"  name="Fecha_creacion" type="text" id="datepicker"></p>
+      
+        <button type="submit">Guardar</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
