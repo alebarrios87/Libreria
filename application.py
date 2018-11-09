@@ -276,6 +276,7 @@ def agregarAutor():
 		return render_template('add-autor.html',username=username)
 	else:
 		if request.method == 'POST':
+			print(login_session['email'])
 			post = Autor(
 					Nobreyapellido = request.form['Nobreyapellido'],
 					Biografia=request.form['Biografia'],
