@@ -245,7 +245,8 @@ def eliminarAutor(IdAutor):
 	post = session.query(Autor).filter_by(IdAutor = IdAutor).one()
 
 	if request.method == 'GET':
-		return render_template('delete-autor.html', post = post)
+		username = login_session['username']
+		return render_template('delete-autor.html', post = post,username=username)
 	else:
 		if request.method == 'POST':
 			session.delete(post)
@@ -260,7 +261,8 @@ def eliminarLibro(IdLibro):
 	post = session.query(Libros).filter_by(IdLibro = IdLibro).one()
 
 	if request.method == 'GET':
-		return render_template('delete-libro.html', post = post)
+		username = login_session['username']
+		return render_template('delete-libro.html', post = post,username=username)
 	else:
 		if request.method == 'POST':
 			session.delete(post)
