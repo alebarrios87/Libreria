@@ -135,7 +135,7 @@ def gconnect():
 	login_session['username'] = data['name']
 	login_session['picture'] = data['picture']
 	login_session['email'] = data['email']
-	print login_session['email']
+	#print login_session['email']
 
 
 	# user_id = getUserID(login_session['email'])
