@@ -42,5 +42,5 @@ class User(Base):
 	email = Column(String(250), nullable=False)
 	pw_hash = Column(String(250), nullable=False)
 
-engine = create_engine('postgresql://iuser:user@localhost/libreria')
+engine = create_engine('postgresql://iuser:user@db/libreria')
 Base.metadata.create_all(engine)

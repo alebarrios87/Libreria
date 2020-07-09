@@ -26,7 +26,7 @@ CLIENT_ID = json.loads(
 
 # Connect to Database and create database session
 #engine = create_engine('sqlite:///blog.db?check_same_thread=false')
-engine = create_engine('postgresql://iuser:user@localhost/libreria')
+engine = create_engine('postgresql://iuser:user@db/libreria')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)

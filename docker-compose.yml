@@ -10,7 +10,7 @@ services:
     volumes:
       - ./postgres-volume:/var/postgresql
     ports:
-      - 5432
+      - 5432:5433
 
   web:
     restart: always
