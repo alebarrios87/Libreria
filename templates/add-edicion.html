@@ -1,27 +1,26 @@
 {% extends "index.html" %}
-
 {% block content %}
-  <div class="row">
-
-    <div class="col-md-6 col-md-offset-3">
-      <h2 id = "titulo4">Agregar Comentario</h2>
+<div class="row">
+   <div class="col-md-6 col-md-offset-3">
+      <h2 id="titulo4">Agregar Comentario</h2>
       <form method="post">
-        <p id = "titulo4">Nombre y Apellido</p>
-<select name="IdLibro">
-    {% for post in posts %}
-   <option value="1">Windows Vista</option> 
-         {% endif %}
-</select>
-
-        <input type="text" class="form-control" name="Nobreyapellido">
-        <br>
-        <p id = "titulo4">Biografia</p>
-        <textarea name="Biografia" class="form-control" rows="5"></textarea>
-        <br>
-        <p id = "titulo4">Fehcha de Nacimiento: <input name="FechaNacimiento" type="text" id="datepicker"></p>
-      
-        <button type="submit">Guardar</button>
+         <p id="titulo4">Seleccione el Libro</p>
+         <select name="IdAutor">
+            {% for post in autor %}
+            <option value="1">Windows Vista</option>
+            {% endif %}
+          </select>
+          <select name="IdLibro">
+            {% for post in libros %}
+            <option value="1">Windows Vista</option>
+            {% endif %}
+         </select>
+         <br />
+         <p id="titulo4">Fecha de Edicion: <input name="Fecha_Edicion" type="text" id="datepicker" /></p>
+         <br />
+         <p id="titulo4">Cantidad: <input name="Cantidad" type="text" id="datepicker" /></p>
+         <button type="submit">Guardar</button>
       </form>
-    </div>
-  </div>
+   </div>
+</div>
 {% endblock %}

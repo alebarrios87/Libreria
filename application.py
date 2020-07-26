@@ -308,10 +308,11 @@ def agregarLibro():
 # Crear Edicion
 @app.route('/agregarEdicion', methods=['GET', 'POST'])
 def agregarEdicion():
-
+	autor = session.query(Autor).all()
+	libros = session.query(Libros).all()
 	if request.method == 'GET':
 		username = login_session['username']
-		return render_template('add-edicion.html',username=username)
+		return render_template('add-edicion.html',username=username, autor=autor,libros=libros)
 	else:
 		if request.method == 'POST':
 			post = Libros(
@@ -363,14 +364,15 @@ def showLibros():
 @app.route('/', methods=['GET'])
 @app.route('/edicion/', methods=['GET'])
 def showEdicion():
-	#posts = session.query(Libreria).all()
+	posts = session.query(Edicion).all()
+	autor = session.query(Autor).all()
+	libros = session.query(Libros).all()
 
 	if 'email' in login_session:
 		username = login_session['username']
-		return render_template('construccion.html',username=username)
-		 #posts = posts,libros=libros,autor=autor)	
+		return render_template('edicion.html',posts = posts,libros=libros,autor=autor, username=username)	
 	else:
-		return render_template('construccion.html')
+		return render_template('edicion.html',posts = posts)
 
 # Editar Autor
 @app.route('/Autor/editar/<int:IdAutor>', methods=['GET', 'POST'])

@@ -32,6 +32,7 @@ class Edicion(Base):
 	IdLibro = Column(Integer, nullable=False)
 	IdAutor = Column(Integer,  nullable=False)
 	Fecha_Edicion = Column(DateTime, nullable=False)
+	Cantidad = Column(Integer, nullable=False)
 	UserID = Column(String(250), nullable=False)
 
 class User(Base):
