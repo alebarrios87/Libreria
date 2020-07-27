@@ -1,21 +1,28 @@
 {% extends "index.html" %}
-
 {% block content %}
-  <div class="row">
-
-    <div class="col-md-6 col-md-offset-3">
-      <h2 id = "titulo4">Agregar Comentario</h2>
+<div class="row">
+   <div class="col-md-6 col-md-offset-3">
+      <h2 id="titulo4">Agregar Comentario</h2>
       <form method="post">
-        <p id = "titulo4">Nombre y Apellido</p>
-        <input type="text" class="form-control" name="Nobreyapellido">
-        <br>
-        <p id = "titulo4">Biografia</p>
-        <textarea name="Biografia" class="form-control" rows="5"></textarea>
-        <br>
-        <p id = "titulo4">Fehcha de Nacimiento: <input name="FechaNacimiento" type="text" id="datepicker"></p>
-      
-        <button type="submit">Guardar</button>
+         <p id="titulo4">Seleccione el Libro</p>
+         <select name="IdLibro" id="IdLibro" class="form-control" >
+            {% for postl in libros %}
+            <option value="{{postl.IdLibro}}"> {{postl.NombreLibro}} </option>
+            {% endfor %}
+         </select>
+         <br />
+         <p id="titulo4">Seleccione el Autor</p>
+         <select  name="IdAutor" id="IdAutor" class="form-control">
+            {% for posta in autor %}
+            <option value="{{posta.IdAutor}}"> {{posta.Nobreyapellido}} </option>
+            {% endfor %}
+         </select>
+         <br />
+         <p id="titulo4">Fecha de Edicion: <input name="Fecha_Edicion" type="text" id="datepicker" /></p>
+         <br />
+         <p id="titulo4">Cantidad: <input name="Cantidad" type="text" class="form-control" /></p>
+         <button type="submit">Guardar</button>
       </form>
-    </div>
-  </div>
+   </div>
+</div>
 {% endblock %}

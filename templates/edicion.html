@@ -8,19 +8,22 @@
 {% for post in posts %}
 <div class="row post">
    <div class="col-md-6">
-      <h4>{{post.IdEdicion}}</h4>
+      <h4>Edicion numero: {{post.IdEdicion}}</h4>
    </div>
    <div class="col-md-6 text-right">
       <h5>Fecha de Edicion: {{post.Fecha_Edicion}}</h5>
    </div>
    <div class="col-md-6 text-right">
-      <h5>Autor: {{post.UserID}}</h5>
+      <h5>AutorID: {{post.UserID}}</h5>
    </div>
    <div class="col-md-12">
-      <p>{{post.IdAutor}}</p>
+      <h4>El autor es: {{post.Nobreyapellido}}</h4>
    </div>
    <div class="col-md-12">
-      <p>{{post.Cantidad}}</p>
+      <h4>Nombre de Lirbo: {{post.NombreLibro}}</h4>
+   </div>
+   <div class="col-md-12">
+      <h4>Cantidad de ediciones: {{post.Cantidad}}</h4>
    </div>
    <div class="col-md-12 acciones">
       {% if session['email'] == post.UserID %}

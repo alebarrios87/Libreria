@@ -5,20 +5,22 @@
       <h2 id="titulo4">Agregar Comentario</h2>
       <form method="post">
          <p id="titulo4">Seleccione el Libro</p>
-         <select name="IdAutor">
-            {% for post in autor %}
-            <option value="1">Windows Vista</option>
-            {% endif %}
-          </select>
-          <select name="IdLibro">
-            {% for post in libros %}
-            <option value="1">Windows Vista</option>
-            {% endif %}
+         <select name="IdLibro" id="IdLibro" class="form-control" >
+            {% for postl in libros %}
+            <option value="{{postl.IdLibro}}"> {{postl.NombreLibro}} </option>
+            {% endfor %}
+         </select>
+         <br />
+         <p id="titulo4">Seleccione el Autor</p>
+         <select  name="IdAutor" id="IdAutor" class="form-control">
+            {% for posta in autor %}
+            <option value="{{posta.IdAutor}}"> {{posta.Nobreyapellido}} </option>
+            {% endfor %}
          </select>
          <br />
          <p id="titulo4">Fecha de Edicion: <input name="Fecha_Edicion" type="text" id="datepicker" /></p>
          <br />
-         <p id="titulo4">Cantidad: <input name="Cantidad" type="text" id="datepicker" /></p>
+         <p id="titulo4">Cantidad: <input name="Cantidad" type="text" class="form-control" /></p>
          <button type="submit">Guardar</button>
       </form>
    </div>

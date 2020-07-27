@@ -315,14 +315,15 @@ def agregarEdicion():
 		return render_template('add-edicion.html',username=username, autor=autor,libros=libros)
 	else:
 		if request.method == 'POST':
-			post = Libros(
+			post = Edicion(
 					IdLibro=request.form['IdLibro'],
 					IdAutor= request.form['IdAutor'],
 					Fecha_Edicion = request.form['Fecha_Edicion'],
+					Cantidad = request.form['Cantidad'],
 					UserID=login_session['email'])
 			session.add(post)
 			session.commit()
-			return redirect(url_for('showLibros'))
+			return redirect(url_for('showEdicion'))
 
 # Show main
 @app.route('/', methods=['GET'])
@@ -364,13 +365,12 @@ def showLibros():
 @app.route('/', methods=['GET'])
 @app.route('/edicion/', methods=['GET'])
 def showEdicion():
-	posts = session.query(Edicion).all()
-	autor = session.query(Autor).all()
-	libros = session.query(Libros).all()
-
+	posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID).\
+		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+			join(Libros, Edicion.IdLibro==Libros.IdLibro)
 	if 'email' in login_session:
 		username = login_session['username']
-		return render_template('edicion.html',posts = posts,libros=libros,autor=autor, username=username)	
+		return render_template('edicion.html',posts = posts, username=username)	
 	else:
 		return render_template('edicion.html',posts = posts)
 
