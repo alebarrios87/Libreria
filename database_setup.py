@@ -1,6 +1,6 @@
 import sys
 import datetime
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime,Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -33,6 +33,7 @@ class Edicion(Base):
 	IdAutor = Column(Integer,  nullable=False)
 	Fecha_Edicion = Column(DateTime, nullable=False)
 	Cantidad = Column(Integer, nullable=False)
+	Precio = Column(Float(2), nullable=False)
 	UserID = Column(String(250), nullable=False)
 
 class User(Base):

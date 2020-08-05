@@ -638,8 +638,8 @@ table.no-margin .progress {
     padding-left: 10px
 }
 .row {
-    margin-right: -10px;
-    margin-left: -10px
+    margin-right: -0px;
+    margin-left: -0px
 }
 .grid_slider .col-md-6 {
     padding: 0 40px
@@ -1350,7 +1350,7 @@ table.jambo_table tbody tr.selected td {
     width: 250px;
     height: 30px;
     margin-left: -125px;
-    margin-top: -15px;
+    margin-top: 5px;
     padding: 14px 0 2px 0;
     border: 1px solid #ddd;
     text-align: center;
@@ -2286,7 +2286,7 @@ select.parsley-error {
     max-width: 170px;
     white-space: pre;
     position: relative;
-    left: -15px;
+    left: 5px;
     opacity: 0;
     z-index: 1;
     transition: 0.15s ease-out
@@ -2576,7 +2576,7 @@ ul.bar_tabs>li {
 ul.bar_tabs>li.active {
     border-right: 6px solid #D3D6DA;
     border-top: 0;
-    margin-top: -15px
+    margin-top: 5px
 }
 ul.bar_tabs>li a {
     padding: 10px 17px;
@@ -3737,7 +3737,7 @@ fieldset {
     max-width: 100%
 }
 .cropper .docs-preview {
-    margin-right: -15px
+    margin-right: 5px
 }
 .cropper .img-preview {
     float: left;
@@ -3810,7 +3810,7 @@ fieldset {
 }
 @media (max-width: 400px) {
     .cropper .btn-group-crop {
-        margin-right: -15px !important
+        margin-right: 5px !important
     }
     .cropper .btn-group-crop>.btn {
         padding-left: 5px;

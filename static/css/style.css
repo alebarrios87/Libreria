@@ -1,5 +1,5 @@
 body{
-	background-color: #E0E0E0;
+	background-color: #776363;
 }
 
 .title{
@@ -10,6 +10,7 @@ body{
 .bienvenida{
 	color: black;
 	background-color: rgba(255, 255, 255, .7);
+	padding: 10px;
 	
 }
 .bienvenida .login{

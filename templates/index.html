@@ -17,6 +17,8 @@
     <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -29,20 +31,20 @@
     
 </head>
 
-<body background="{{ url_for('static', filename='images/Libreria.jpg') }}">
+<body ><!--background="{{ url_for('static', filename='images/Libreria.jpg') }}"-->
   <div class="contenedor">
     <div class="row">
         <div  class ="col-md-2">
           <a href="/public">
-            <img  src="{{ url_for('static', filename='images/Libreriai.png') }}" class="img-responsive">
+          <img  src="{{ url_for('static', filename='images/Libreriai.png') }}" class="img-responsive">
           </a>
         </div>
 				<div class ="col-md-10">
-					<p id="titulo" class="text-right">Libreria Atlas</p>
-					<p id="titulo2" class="text-right">Menu Principal</p>
+					<p id="titulo" class="text-right post">Libreria Atlas</p>
+					<p id="titulo2" class="text-right post">Menu Principal</p>
 				</div>
     </div>
-    <div class="bienvenida row">
+    <div class="row post">
       <div class="col-md-9">
         <h3 id="titulo3">Bienvenido {{username}}</h>
       </div>
@@ -57,7 +59,9 @@
     </div>
      <div class="row">
     </div>
+    
      <div class="row">
+       
         
           {% block content %}
           {% endblock %}

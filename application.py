@@ -181,8 +181,7 @@ def gdisconnect():
 				return redirect(url_for('showGenres'))
 		else:
 				# For whatever reason, the given token was invalid.
-				response = make_response(
-						json.dumps('Failed to revoke token for given user.', 400))
+				response = make_response(json.dumps('Failed to revoke token for given user.', 400))
 				response.headers['Content-Type'] = 'application/json'
 		return response
 
@@ -320,6 +319,31 @@ def agregarEdicion():
 					IdAutor= request.form['IdAutor'],
 					Fecha_Edicion = request.form['Fecha_Edicion'],
 					Cantidad = request.form['Cantidad'],
+					Precio = request.form['Precio'],
+					UserID=login_session['email'])
+			session.add(post)
+			session.commit()
+			return redirect(url_for('showEdicion'))
+
+
+# Editar Edicion
+@app.route('/Edicion/editar/<int:IdEdicion>', methods=['GET', 'POST'])
+def editarEdicion(IdEdicion):
+	posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID).\
+		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+			join(Libros, Edicion.IdLibro==Libros.IdLibro)
+	post = filter_by(IdEdicion = IdEdicion).one()
+	if request.method == 'GET':
+		username = login_session['username']
+		return render_template('edit-edicion.html', post = post,IdEdicion=IdEdicion, username=username)
+	else:
+		if request.method == 'POST':
+			post = Edicion(
+					IdLibro=request.form['IdLibro'],
+					IdAutor= request.form['IdAutor'],
+					Fecha_Edicion = request.form['Fecha_Edicion'],
+					Cantidad = request.form['Cantidad'],
+					Precio = request.form['Precio'],
 					UserID=login_session['email'])
 			session.add(post)
 			session.commit()
@@ -374,6 +398,7 @@ def showEdicion():
 	else:
 		return render_template('edicion.html',posts = posts)
 
+
 # Editar Autor
 @app.route('/Autor/editar/<int:IdAutor>', methods=['GET', 'POST'])
 def editarAutor(IdAutor):
@@ -416,5 +441,5 @@ def editarLibros(IdLibro):
 
 if __name__ == '__main__':
 	app.secret_key = "secret key"
-	app.debug = False
+	app.debug = True
 	app.run(host = '0.0.0.0', port = 8080)
