@@ -251,7 +251,7 @@ def eliminarAutor(IdAutor):
 			session.delete(post)
 			session.commit()
 			return redirect(url_for('showAutor'))
-					 
+		 
 
 # Delete Libro
 @app.route('/Libros/eliminar/<int:IdLibro>', methods=['GET', 'POST'])
@@ -329,23 +329,22 @@ def agregarEdicion():
 # Editar Edicion
 @app.route('/Edicion/editar/<int:IdEdicion>', methods=['GET', 'POST'])
 def editarEdicion(IdEdicion):
-	posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID).\
-		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
-			join(Libros, Edicion.IdLibro==Libros.IdLibro)
-	post = filter_by(IdEdicion = IdEdicion).one()
+	post = session.query(Edicion).filter_by(IdEdicion = IdEdicion).one()
+	autor = session.query(Autor).all()
+	libros = session.query(Libros).all()
 	if request.method == 'GET':
 		username = login_session['username']
-		return render_template('edit-edicion.html', post = post,IdEdicion=IdEdicion, username=username)
+		return render_template('edit-edicion.html',post=post,username=username,IdEdicion=IdEdicion, autor=autor,libros=libros)
 	else:
 		if request.method == 'POST':
-			post = Edicion(
-					IdLibro=request.form['IdLibro'],
-					IdAutor= request.form['IdAutor'],
-					Fecha_Edicion = request.form['Fecha_Edicion'],
-					Cantidad = request.form['Cantidad'],
-					Precio = request.form['Precio'],
-					UserID=login_session['email'])
-			session.add(post)
+			print(IdEdicion)
+			post = session.query(Edicion).filter_by(IdEdicion = IdEdicion).one()
+			post.IdLibro=request.form['IdLibro'],
+			post.IdAutor= request.form['IdAutor'],
+			post.Fecha_Edicion = request.form['Fecha_Edicion'],
+			post.Cantidad = request.form['Cantidad'],
+			post.Precio = request.form['Precio'],
+			post.UserID=login_session['email']
 			session.commit()
 			return redirect(url_for('showEdicion'))
 
@@ -362,19 +361,20 @@ def showMain():
 		return render_template('public.html', posts = posts)
 
 # Show Autor
-@app.route('/', methods=['GET'])
-@app.route('/autor/', methods=['GET'])
+@app.route('/autor/', methods=['GET', 'POST'])
 def showAutor():
-	posts = session.query(Autor).all()
-	
-	if 'email' in login_session:
-		username = login_session['username']
-		return render_template('autor.html', posts = posts, username=username)	
-	else:
-		return render_template('autor.html', posts = posts)
+	if request.method == 'GET':
+		posts = session.query(Autor).all()
+
+	if request.method == 'POST':
+		busqueda = request.form.get('busqueda', default = '', type = str)
+		app.logger.error(busqueda)
+		search = "%{}%".format(busqueda)
+		posts = session.query(Autor).filter(Autor.Nobreyapellido.ilike(search))
+
+	return render_template('autor.html', posts = posts)
 
 # Show Libros
-@app.route('/', methods=['GET'])
 @app.route('/libros/', methods=['GET'])
 def showLibros():
 	posts = session.query(Libros).all()
@@ -386,10 +386,9 @@ def showLibros():
 		return render_template('libros.html', posts = posts)
 
 # Show Edicion
-@app.route('/', methods=['GET'])
 @app.route('/edicion/', methods=['GET'])
 def showEdicion():
-	posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID).\
+	posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
 		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
 			join(Libros, Edicion.IdLibro==Libros.IdLibro)
 	if 'email' in login_session:
