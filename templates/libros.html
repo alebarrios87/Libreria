@@ -2,10 +2,13 @@
 
 {% block content %}
       <div class="boton col-md-12">
-	    {% if username %}
+      {% if session['email'] %}
         <a href="/agregarLibro" class="btn btn-primary">Agregar Libro</a>
 		{% endif %}
       </div>
+      <h4 id="Titulo">Buscar Libro:</h4>
+      <form method="POST"><input type="text" name="busqueda" />
+        <input type="submit" value="Buscar" /></form>
   {% for post in posts %}
     <div class="row post">
       <div class="col-md-6">

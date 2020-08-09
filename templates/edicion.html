@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block content %}
 <div class="boton col-md-12">
-   {% if username %}
+   {% if session['email'] %}
    <a href="/agregarEdicion" class="btn btn-primary">Agregar Edicion</a>
    {% endif %}
 </div>

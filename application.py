@@ -375,15 +375,17 @@ def showAutor():
 	return render_template('autor.html', posts = posts)
 
 # Show Libros
-@app.route('/libros/', methods=['GET'])
+@app.route('/libros/', methods=['GET', 'POST'])
 def showLibros():
-	posts = session.query(Libros).all()
+	if request.method == 'GET':
+		posts = session.query(Libros).all()
+	if request.method == 'POST':
+		busqueda = request.form.get('busqueda', default = '', type = str)
+		app.logger.error(busqueda)
+		search = "%{}%".format(busqueda)
+		posts = session.query(Libros).filter(Libros.NombreLibro.ilike(search))
 	
-	if 'email' in login_session:
-		username = login_session['username']
-		return render_template('libros.html', posts = posts, username=username)	
-	else:
-		return render_template('libros.html', posts = posts)
+	return render_template('libros.html', posts = posts)
 
 # Show Edicion
 @app.route('/edicion/', methods=['GET'])
