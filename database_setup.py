@@ -36,6 +36,23 @@ class Edicion(Base):
 	Precio = Column(Float(2), nullable=False)
 	UserID = Column(String(250), nullable=False)
 
+class Venta(Base):	
+	__tablename__ = 'Venta'
+
+	IdVenta = Column(Integer, primary_key=True)
+	Fecha_Venta = Column(DateTime, nullable=False)
+	Nobreyapellido = Column(String(50), nullable=False)
+	Cuit = Column(Integer, nullable=False)
+	UserID = Column(String(250), nullable=False)
+
+class VentaDetalle(Base):	
+	__tablename__ = 'VentaDetalle'
+
+	IdDetalle = Column(Integer, primary_key=True)
+	IdVenta = Column(Integer, nullable=False)
+	IdEdicion = Column(Integer, nullable=False)
+	Cantidad = Column(Integer, nullable=False)
+
 class User(Base):
 	__tablename__ = 'user'
 

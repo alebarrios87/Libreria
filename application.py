@@ -1,7 +1,7 @@
 from flask import Flask, g, render_template, jsonify, url_for, flash
 from flask import request, redirect, make_response
 from flask import session as login_session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, or_, and_
 from sqlalchemy.orm import sessionmaker
 from functools import wraps
 from database_setup import Base, Autor, Libros, Edicion, User
@@ -388,16 +388,40 @@ def showLibros():
 	return render_template('libros.html', posts = posts)
 
 # Show Edicion
-@app.route('/edicion/', methods=['GET'])
+@app.route('/edicion/', methods=['GET', 'POST'])
 def showEdicion():
-	posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
-		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
-			join(Libros, Edicion.IdLibro==Libros.IdLibro)
-	if 'email' in login_session:
-		username = login_session['username']
-		return render_template('edicion.html',posts = posts, username=username)	
-	else:
-		return render_template('edicion.html',posts = posts)
+	if request.method == 'GET':
+		posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+			join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+				join(Libros, Edicion.IdLibro==Libros.IdLibro)
+	if request.method == 'POST':
+		busqueda1 = request.form.get('busqueda1', default = '', type = str)
+		busqueda2 = request.form.get('busqueda2', default = '', type = str)
+		search1 = "%{}%".format(busqueda1)
+		search2 = "%{}%".format(busqueda2)
+		if (len(busqueda1)>0 and len(busqueda2)>0):
+			app.logger.error(busqueda1)
+			app.logger.error(busqueda2)
+			posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+				join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+					join(Libros, Edicion.IdLibro==Libros.IdLibro).filter(and_(Libros.NombreLibro.ilike(search2),Autor.Nobreyapellido.ilike(search1)))
+		elif(len(busqueda1)>0):
+			app.logger.error(busqueda1)
+			app.logger.error(search1)
+			posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+				join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+					join(Libros, Edicion.IdLibro==Libros.IdLibro).filter(Autor.Nobreyapellido.ilike(search1))
+		elif(len(busqueda2)>0):
+			app.logger.error(busqueda2)
+			app.logger.error(search2)
+			posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+				join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+					join(Libros, Edicion.IdLibro==Libros.IdLibro).filter(Libros.NombreLibro.ilike(search2))
+		else:
+			posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+				join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+					join(Libros, Edicion.IdLibro==Libros.IdLibro)
+	return render_template('edicion.html',posts = posts)
 
 
 # Editar Autor
