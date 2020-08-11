@@ -27,14 +27,16 @@
 
   <body>
 
-  <div class="container">
-  	   
-        <div  class ="col-md-2">
-          <a href="/public">
-            <img  src="{{ url_for('static', filename='images/Libreriai.png') }}" class="img-responsive">
-          </a>
-
-    </div>>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav">
+          <li><a href="/public">Home</a></li>
+          <li><a href="/autor">Autores</a></li>
+          <li><a href="/libros">Libros</a></li>
+          <li><a href="/edicion">Edicion</a></li>
+        </ul>
+      </div>
+    </nav>
 
     <form method="post">
       <div class="form-signin">
