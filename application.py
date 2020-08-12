@@ -4,7 +4,7 @@ from flask import session as login_session
 from sqlalchemy import create_engine, or_, and_
 from sqlalchemy.orm import sessionmaker
 from functools import wraps
-from database_setup import Base, Autor, Libros, Edicion, User
+from database_setup import Base, Autor, Libros, Edicion, User, Venta, VentaDetalle
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 import random
 import string
