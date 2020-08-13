@@ -40,7 +40,7 @@ class Venta(Base):
 	__tablename__ = 'Venta'
 
 	IdVenta = Column(Integer, primary_key=True)
-	Fecha_Venta = Column(DateTime, nullable=False)
+	Fecha_Venta = Column(DateTime, default=datetime.datetime.utcnow)
 	Nobreyapellido = Column(String(50), nullable=False)
 	Cuit = Column(Integer, nullable=False)
 	UserID = Column(String(250), nullable=False)
@@ -50,6 +50,13 @@ class VentaDetalle(Base):
 
 	IdDetalle = Column(Integer, primary_key=True)
 	IdVenta = Column(Integer, nullable=False)
+	IdEdicion = Column(Integer, nullable=False)
+	Cantidad = Column(Integer, nullable=False)
+
+class Cart(Base):
+	__tablename__ = 'Cart'
+	
+	IdVenta = Column(Integer, primary_key=True)
 	IdEdicion = Column(Integer, nullable=False)
 	Cantidad = Column(Integer, nullable=False)
 

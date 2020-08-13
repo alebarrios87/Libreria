@@ -1,10 +1,11 @@
 from flask import Flask, g, render_template, jsonify, url_for, flash
 from flask import request, redirect, make_response
 from flask import session as login_session
-from sqlalchemy import create_engine, or_, and_
+from sqlalchemy import create_engine, or_, and_,DateTime
+from sqlalchemy.sql.expression import func
 from sqlalchemy.orm import sessionmaker
 from functools import wraps
-from database_setup import Base, Autor, Libros, Edicion, User, Venta, VentaDetalle
+from database_setup import Base, Autor, Libros, Edicion, User, Venta, VentaDetalle, Cart
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 import random
 import string
@@ -329,7 +330,7 @@ def agregarEdicion():
 # Crear Venta
 @app.route('/realizarVenta', methods=['GET', 'POST'])
 def realizarVenta():
-	posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+	posts = session.query(Edicion.IdEdicion,Autor.IdAutor,Libros.IdLibro, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
 		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
 			join(Libros, Edicion.IdLibro==Libros.IdLibro)
 	if request.method == 'GET':
@@ -337,16 +338,38 @@ def realizarVenta():
 		return render_template('add-venta.html',username=username, posts=posts)
 	else:
 		if request.method == 'POST':
-			post = Edicion(
-					IdLibro=request.form['IdLibro'],
-					IdAutor= request.form['IdAutor'],
-					Fecha_Edicion = request.form['Fecha_Edicion'],
-					Cantidad = request.form['Cantidad'],
-					Precio = request.form['Precio'],
+			post = Venta(
+					Nobreyapellido= request.form['Nobreyapellido'],
+					Cuit = request.form['Cuit'],
 					UserID=login_session['email'])
 			session.add(post)
 			session.commit()
+			actual = session.query(func.max(Venta.IdVenta))
+			
+			vede= VentaDetalle(
+				IdVenta=actual,
+				IdEdicion=request.form['IdEdicion'],
+				Cantidad=request.form['quantity']
+			)
+			session.add(vede)
+			session.commit()
+
 			return redirect(url_for('showVentas'))
+
+@app.route('/cart/<int:product_id>', methods=['POST'])
+def add_to_cart(product_id):
+	username = login_session['username']
+	posts = session.query(Edicion.IdEdicion,Autor.IdAutor,Libros.IdLibro, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+			join(Libros, Edicion.IdLibro==Libros.IdLibro)
+	if request.method == 'POST':
+		post= Cart(
+			IdEdicion=product_id,
+			Cantidad=request.form['quantity']
+		)
+		session.add(post)
+		session.commit()
+	return render_template('add-venta.html', posts=posts, post=post,username=username)
 
 
 # Editar Edicion

@@ -1,67 +1,78 @@
 {% extends "index.html" %}
 {% block content %}
-<div class="row">
-   <div class="col-md-6 col-md-offset-3">
-      <h2 id="titulo4">Agregar Comentario</h2>
-      <form method="post">
-         <p id="titulo4">Seleccione el Libro</p>
-         <select name="IdLibro" id="IdLibro" class="form-control" >
-            {% for postl in libros %}
-            <option value="{{postl.IdLibro}}"> {{postl.NombreLibro}} </option>
-            {% endfor %}
-         </select>
-         <br />
-         <p id="titulo4">Seleccione el Autor</p>
-         <select  name="IdAutor" id="IdAutor" class="form-control">
-            {% for posta in autor %}
-            <option value="{{posta.IdAutor}}"> {{posta.Nobreyapellido}} </option>
-            {% endfor %}
-         </select>
-         <br />
-         <p id="titulo4">Fecha de Edicion: <input name="Fecha_Edicion" type="text" id="datepicker" /></p>
-         <br />
-         <p id="titulo4">Precio: 
-            <input  id="moneda_nac" onkeypress="return filterFloat(event,this);" name="Precio" type="text" class="form-control" /></p>
-         <br />
-         <p id="titulo4">Cantidad: <input name="Cantidad" type="text" class="form-control" /></p>
-         <button type="submit">Guardar</button>
-      </form>
+<form method="post">
+<table class="table">
+<tr>
+   <th >Edicion Numero  </th>
+   <th >Fecha de Edicion  </th>
+   <th >AutorID  </th>
+   <th >El autor es  </th>
+   <th >Nombre de Libro  </th>
+   <th >Cantidad de ediciones  </th>
+   <th >Precio  </th>
+   <th >Cantidad a comprar  </th>
+</tr>
+{% for posts in posts %}
+<tr>
+   <td name="IdEdicion" value="{{posts.IdEdicion}}">{{posts.IdEdicion}}</td>
+   <td>{{posts.Fecha_Edicion}}</td>
+   <td>{{posts.UserID}}</td>
+   <td>{{posts.Nobreyapellido}}</td>
+   <td>
+      <div class="product-title">{{posts.NombreLibro}}</div>
+   </td>
+   <td>{{posts.Cantidad}}</td>
+   <td>
+      <div class="product-price">{{posts.Precio}}$</div>
+   </td>
+   <td>
+      <div class="product-quantity">
+         <input class="form-control" name="quantity" type="number" value="0" min="0">
+      </div>
+   </td>
+</tr>
+{% endfor %}
+<table class="table">
+   <tr>
+      <th >Nombre y apellido del comprador  </th>
+      <th >Cuit </th>
+   </tr>
+   <tr>
+      <td>
+         <input class="form-control" type="text" name="Nobreyapellido" id="Nobreyapellido"  />
+      </td>
+      <td>
+         <input class="form-control" type="text" name="Cuit" id="Cuit"/>
+      </td>
+      <td>
+        <a href="">
+        <i class="fa fa-cart-plus fa-fw"></i><input type="submit" id="send" value="Comprar">
+        </a>
+     </td>
+   </tr>
    </div>
-</div>
-<script type="text/javascript">
-   function filterFloat(evt,input){
-       // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
-       var key = window.Event ? evt.which : evt.keyCode;    
-       var chark = String.fromCharCode(key);
-       var tempValue = input.value+chark;
-       if(key >= 48 && key <= 57){
-           if(filter(tempValue)=== false){
-               return false;
-           }else{       
-               return true;
-           }
-       }else{
-             if(key == 8 || key == 13 || key == 0) {     
-                 return true;              
-             }else if(key == 46){
-                   if(filter(tempValue)=== false){
-                       return false;
-                   }else{       
-                       return true;
-                   }
-             }else{
-                 return false;
-             }
-       }
-   }
-   function filter(__val__){
-       var preg = /^([0-9]+\.?[0-9]{0,2})$/; 
-       if(preg.test(__val__) === true){
-           return true;
-       }else{
-          return false;
-       }
-       
-   }
-   </script>
+</table>
+</form>
+<script>
+    function addToCart(productId) {
+    fetch('/cart/productId', 
+        {method: 'POST'}
+    )
+}
+$(document).ready(function() {    
+    $('#send').prop('disabled', true);
+
+    $('#Nobreyapellido, #Cuit').keyup(function(){
+
+        if ($('#Nobreyapellido').val() != '' && $('#Cuit').val() != '')
+        {
+            $('#send').prop('disabled', false);
+        }
+        else
+        {
+            $('#send').prop('disabled', true);
+        }
+    });
+});
+</script>
 {% endblock %}
