@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from functools import wraps
 from database_setup import Base, Autor, Libros, Edicion, User, Venta, VentaDetalle, Cart
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
+
 import random
 import string
 import json
@@ -54,6 +55,8 @@ def login():
 			
 				login_session['email'] = request.form['email']
 				login_session['username'] = request.form['email']
+				login_session['total'] = 0
+				login_session['purchases'] = {}
 				
 				return render_template('public.html', username=login_session['email'])
 
@@ -214,6 +217,8 @@ def logout():
 	if (login_session['username']):
 		del login_session['username']
 		del login_session['email']
+		del login_session['total']
+		del login_session['purchases']
 	return redirect(url_for('showMain'))
 
 # Crear usuario
@@ -333,43 +338,44 @@ def realizarVenta():
 	posts = session.query(Edicion.IdEdicion,Autor.IdAutor,Libros.IdLibro, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
 		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
 			join(Libros, Edicion.IdLibro==Libros.IdLibro)
-	if request.method == 'GET':
-		username = login_session['username']
-		return render_template('add-venta.html',username=username, posts=posts)
-	else:
-		if request.method == 'POST':
-			post = Venta(
-					Nobreyapellido= request.form['Nobreyapellido'],
-					Cuit = request.form['Cuit'],
-					UserID=login_session['email'])
-			session.add(post)
-			session.commit()
-			actual = session.query(func.max(Venta.IdVenta))
-			
-			vede= VentaDetalle(
-				IdVenta=actual,
-				IdEdicion=request.form['IdEdicion'],
-				Cantidad=request.form['quantity']
-			)
-			session.add(vede)
-			session.commit()
-
-			return redirect(url_for('showVentas'))
-
-@app.route('/cart/<int:product_id>', methods=['POST'])
-def add_to_cart(product_id):
 	username = login_session['username']
-	posts = session.query(Edicion.IdEdicion,Autor.IdAutor,Libros.IdLibro, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
-		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
-			join(Libros, Edicion.IdLibro==Libros.IdLibro)
+	
 	if request.method == 'POST':
-		post= Cart(
-			IdEdicion=product_id,
-			Cantidad=request.form['quantity']
-		)
+		quantity = int(request.form['quantity'])
+
+		login_session['total'] = login_session['total'] + quantity
+		login_session['purchases'][request.form['IdEdicion']] = { 'id': request.form['IdEdicion'], 'quantity': quantity }
+		
+		app.logger.info(login_session)
+	
+	return render_template('add-venta.html',username=username, posts=posts)
+
+@app.route('/finalizarVenta', methods=['GET', 'POST'])
+def finalizarVenta():
+	if request.method == 'POST':
+		name = request.form['name']
+		lastname = request.form['lastname']
+		cuit = request.form['cuit']
+		
+		# Guardar la venta en BD
+		post = Venta(
+			Nobreyapellido= name + ' ' + lastname,
+			Cuit = cuit,
+			UserID=login_session['email'])
 		session.add(post)
 		session.commit()
-	return render_template('add-venta.html', posts=posts, post=post,username=username)
+
+		actual = session.query(func.max(Venta.IdVenta))
+		
+		for _,purchase in login_session['purchases'].items():
+			app.logger.info(purchase)
+			detalle = VentaDetalle( IdVenta=actual, IdEdicion=purchase['id'], Cantidad=purchase['quantity'] )
+			session.add(detalle)
+		
+		session.commit()
+	# Finaliza guardar la venta en BD
+	
+	return render_template('finalizar.html', username=username)
 
 
 # Editar Edicion

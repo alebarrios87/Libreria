@@ -52,16 +52,17 @@
             <li><a href="/edicion">Edicion</a></li>
             <li><a href="/Ventas">Ventas</a></li>
             {% if session['username'] %}
-            <li><a class="text-right login" href="/logout">Logout</a></li>
-            {% else %}
-            <li><a href="/login">Login</a></li>
-          {% endif %}
+              <li><a class="text-right login" href="/logout">Logout</a></li>
+              {% else %}
+              <li><a href="/login">Login</a></li>
+            {% endif %}
+            {% if session['cart'] %}
+              <li><span>{{ session['cart']['total'] }}</span></li>
+            {% endif %}
           </ul>
         </div>
       </nav>
     </div>
-     <div class="row">
-    </div>  
      <div class="row">
           {% block content %}
           {% endblock %}

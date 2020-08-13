@@ -1,78 +1,63 @@
 {% extends "index.html" %}
 {% block content %}
-<form method="post">
-<table class="table">
-<tr>
-   <th >Edicion Numero  </th>
-   <th >Fecha de Edicion  </th>
-   <th >AutorID  </th>
-   <th >El autor es  </th>
-   <th >Nombre de Libro  </th>
-   <th >Cantidad de ediciones  </th>
-   <th >Precio  </th>
-   <th >Cantidad a comprar  </th>
-</tr>
-{% for posts in posts %}
-<tr>
-   <td name="IdEdicion" value="{{posts.IdEdicion}}">{{posts.IdEdicion}}</td>
-   <td>{{posts.Fecha_Edicion}}</td>
-   <td>{{posts.UserID}}</td>
-   <td>{{posts.Nobreyapellido}}</td>
-   <td>
-      <div class="product-title">{{posts.NombreLibro}}</div>
-   </td>
-   <td>{{posts.Cantidad}}</td>
-   <td>
-      <div class="product-price">{{posts.Precio}}$</div>
-   </td>
-   <td>
-      <div class="product-quantity">
-         <input class="form-control" name="quantity" type="number" value="0" min="0">
-      </div>
-   </td>
-</tr>
-{% endfor %}
+<!-- <form method="post"> -->
 <table class="table">
    <tr>
-      <th >Nombre y apellido del comprador  </th>
-      <th >Cuit </th>
+      <th >Edicion Numero  </th>
+      <th >Fecha de Edicion  </th>
+      <th >AutorID  </th>
+      <th >El autor es  </th>
+      <th >Nombre de Libro  </th>
+      <th >Cantidad de ediciones  </th>
+      <th >Precio  </th>
+      <th >Cantidad a comprar  </th>
    </tr>
-   <tr>
-      <td>
-         <input class="form-control" type="text" name="Nobreyapellido" id="Nobreyapellido"  />
-      </td>
-      <td>
-         <input class="form-control" type="text" name="Cuit" id="Cuit"/>
-      </td>
-      <td>
-        <a href="">
-        <i class="fa fa-cart-plus fa-fw"></i><input type="submit" id="send" value="Comprar">
-        </a>
-     </td>
-   </tr>
-   </div>
+   {% for post in posts %}
+   <form method="POST" class="cart-form">
+      <tr>
+         <td>{{post.IdEdicion}} <input type="hidden" name="IdEdicion" value="{{post.IdEdicion}}"></td>
+         <td>{{post.Fecha_Edicion}}</td>
+         <td>{{post.UserID}}</td>
+         <td>{{post.Nobreyapellido}}</td>
+         <td>
+            <div class="product-title">{{post.NombreLibro}}</div>
+         </td>
+         <td>{{post.Cantidad}}</td>
+         <td>
+            <div class="product-price">{{post.Precio}}$</div>
+         </td>
+         <td>
+            <div class="product-quantity">
+               <input class="form-control" name="quantity" type="number" value="0" min="0">
+            </div>
+         </td>
+         <td>
+            <div>
+               <button type="submit">
+                  <i class="fa fa-cart-plus fa-fw"></i>
+                  Agregar al carrito
+               </button>
+            </div>
+         </td>
+      </tr>
+   </form>
+   {% endfor %}
 </table>
-</form>
+
+<div class="container-fluid">
+   <form action="finalizarVenta" method="POST">
+      <input type="text" name="name" placeholder="Nombre">
+      <input type="text" name="lastname" placeholder="Apellido">
+      <input type="text" name="cuit" placeholder="CUIT">
+      <input type="submit" value="Finalizar compra!">
+   </form>
+</div>
+
 <script>
-    function addToCart(productId) {
-    fetch('/cart/productId', 
-        {method: 'POST'}
-    )
-}
-$(document).ready(function() {    
-    $('#send').prop('disabled', true);
-
-    $('#Nobreyapellido, #Cuit').keyup(function(){
-
-        if ($('#Nobreyapellido').val() != '' && $('#Cuit').val() != '')
-        {
-            $('#send').prop('disabled', false);
-        }
-        else
-        {
-            $('#send').prop('disabled', true);
-        }
-    });
-});
+   $(document).ready(() => {
+      $('.cart-form').on('submit', e => {
+         $(this).submit()
+      });
+   });
 </script>
 {% endblock %}
