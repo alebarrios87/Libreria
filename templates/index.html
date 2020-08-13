@@ -43,14 +43,6 @@
       <div class="col-md-9">
         <h3 id="titulo3">Bienvenido {{session['username']}}</h>
       </div>
-      <div class="col-md-3 text-right login">
-        {% if session['email'] %}
-          <a href="/logout">Logout</a>
-        {% else %}
-          <a href="/login">Login</a>
-        {% endif %}
-		
-      </div>
       <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
           <ul class="nav navbar-nav">
@@ -58,6 +50,12 @@
             <li><a href="/autor">Autores</a></li>
             <li><a href="/libros">Libros</a></li>
             <li><a href="/edicion">Edicion</a></li>
+            <li><a href="/Ventas">Ventas</a></li>
+            {% if session['username'] %}
+            <li><a class="text-right login" href="/logout">Logout</a></li>
+            {% else %}
+            <li><a href="/login">Login</a></li>
+          {% endif %}
           </ul>
         </div>
       </nav>

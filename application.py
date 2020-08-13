@@ -210,10 +210,10 @@ def valid_pw(name, password, h):
 
 @app.route('/logout')
 def logout():
-		
+	if (login_session['username']):
 		del login_session['username']
-
-		return render_template('public.html')
+		del login_session['email']
+	return redirect(url_for('showMain'))
 
 # Crear usuario
 @app.route('/registrar', methods=['GET', 'POST'])
@@ -326,6 +326,29 @@ def agregarEdicion():
 			return redirect(url_for('showEdicion'))
 
 
+# Crear Venta
+@app.route('/realizarVenta', methods=['GET', 'POST'])
+def realizarVenta():
+	posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+		join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+			join(Libros, Edicion.IdLibro==Libros.IdLibro)
+	if request.method == 'GET':
+		username = login_session['username']
+		return render_template('add-venta.html',username=username, posts=posts)
+	else:
+		if request.method == 'POST':
+			post = Edicion(
+					IdLibro=request.form['IdLibro'],
+					IdAutor= request.form['IdAutor'],
+					Fecha_Edicion = request.form['Fecha_Edicion'],
+					Cantidad = request.form['Cantidad'],
+					Precio = request.form['Precio'],
+					UserID=login_session['email'])
+			session.add(post)
+			session.commit()
+			return redirect(url_for('showVentas'))
+
+
 # Editar Edicion
 @app.route('/Edicion/editar/<int:IdEdicion>', methods=['GET', 'POST'])
 def editarEdicion(IdEdicion):
@@ -354,7 +377,7 @@ def editarEdicion(IdEdicion):
 def showMain():
 	posts = session.query(Autor).all()
 
-	if 'email' in login_session:
+	if 'username' in login_session:
 		username = login_session['username']
 		return render_template('public.html', posts = posts, username=username)
 	else:	
@@ -461,6 +484,43 @@ def editarLibros(IdLibro):
 			post.UserID=login_session['email']
 			session.commit()
 			return redirect(url_for('showLibros'))
+# Show Ventas
+@app.route('/Ventas/', methods=['GET', 'POST'])
+def showVentas():
+	if request.method == 'GET':
+		posts = session.query(Venta.IdVenta, Venta.Fecha_Venta, Venta.Nobreyapellido, Venta.Cuit, Venta.UserID, VentaDetalle.IdEdicion, VentaDetalle.Cantidad, Libros.NombreLibro, Autor.Nobreyapellido, Edicion.Precio).\
+			join(Venta, Venta.IdVenta==VentaDetalle.IdVenta).\
+				join(Edicion, VentaDetalle.IdEdicion==Edicion.IdEdicion).\
+					join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+						join(Libros, Edicion.IdLibro==Libros.IdLibro)
+	if request.method == 'POST':
+		busqueda1 = request.form.get('busqueda1', default = '', type = str)
+		busqueda2 = request.form.get('busqueda2', default = '', type = str)
+		search1 = "%{}%".format(busqueda1)
+		search2 = "%{}%".format(busqueda2)
+		if (len(busqueda1)>0 and len(busqueda2)>0):
+			app.logger.error(busqueda1)
+			app.logger.error(busqueda2)
+			posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+				join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+					join(Libros, Edicion.IdLibro==Libros.IdLibro).filter(and_(Libros.NombreLibro.ilike(search2),Autor.Nobreyapellido.ilike(search1)))
+		elif(len(busqueda1)>0):
+			app.logger.error(busqueda1)
+			app.logger.error(search1)
+			posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+				join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+					join(Libros, Edicion.IdLibro==Libros.IdLibro).filter(Autor.Nobreyapellido.ilike(search1))
+		elif(len(busqueda2)>0):
+			app.logger.error(busqueda2)
+			app.logger.error(search2)
+			posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+				join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+					join(Libros, Edicion.IdLibro==Libros.IdLibro).filter(Libros.NombreLibro.ilike(search2))
+		else:
+			posts = session.query(Edicion.IdEdicion, Libros.NombreLibro,Autor.Nobreyapellido,Edicion.Fecha_Edicion,Edicion.Cantidad,Edicion.UserID,Edicion.Precio).\
+				join(Autor, Edicion.IdAutor==Autor.IdAutor).\
+					join(Libros, Edicion.IdLibro==Libros.IdLibro)
+	return render_template('venta.html',posts = posts)
 
 
 

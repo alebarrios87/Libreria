@@ -1,36 +1,41 @@
 {% extends "index.html" %}
-
 {% block content %}
-      <div class="boton col-md-12">
-	     {% if session['email'] %}
-         <a href="/agregarAutor" class="btn btn-primary">Agregar Autor</a>
-		  {% endif %}
-      </div>
-      <h4 id="Titulo">Buscar Autor:</h4>
-      <form method="POST"><input type="text" name="busqueda" />
-        <input type="submit" value="Buscar" /></form>
-  {% for post in posts %}
-    <div class="row post">
-      <div class="col-md-6">
-        <h4>{{post.Nobreyapellido}}</h4>
-      </div>
-      <div class="col-md-6 text-right">
-        <h5>Fecha de Nacimiento: {{post.Fecha_nacimiento}}</h5>
-      </div>
-		<div class="col-md-6 text-right">
-        <h5>Autor: {{post.UserID}}</h5>
-        <h5>N° de autor: {{post.IdAutor}}</h5>
-      </div>
-      <div class="col-md-12">
-        <p>{{post.Biografia}}</p>
-      </div>
-      <div class="col-md-12 acciones">
-        {% if session['email'] == post.UserID %}
-        <a href="/Autor/editar/{{post.IdAutor}}"><i class="fa fa-pencil fa-fw"></i>Editar</a>
-        <a href="/Autor/eliminar/{{post.IdAutor}}"><i class="fa fa-trash-o fa-fw"></i>Eliminar</a>
-        {% endif %}
-      </div>
-        
-    </div>
-  {% endfor%}
+<div class="boton col-md-12">
+   {% if session['email'] %}
+   <a href="/agregarAutor" class="btn btn-primary">Agregar Autor</a>
+   {% endif %}
+</div>
+<h4 id="Titulo">Buscar Autor:</h4>
+<form method="POST"><input type="text" name="busqueda" />
+   <input type="submit" value="Buscar" />
+</form>
+<table class="table">
+   <tr>
+      <th >El autor es  </th>
+      <th >Fecha de Nacimiento  </th>
+      <th >AutorID  </th>
+      <th >N° de autor  </th>
+      <th >Bibliografia del autor  </th>
+   </tr>
+   {% for posts in posts %}
+   <tr>
+      <td>{{posts.Nobreyapellido}}</td>
+      <td>{{posts.Fecha_nacimiento}}</td>
+      <td>{{posts.UserID}}</td>
+      <td>{{posts.IdAutor}}</td>
+      <td>{{posts.Biografia}}</td>
+      {% if session['email'] == posts.UserID %}
+      <td>
+         <a href="/Autor/editar/{{posts.IdAutor}}">
+         <i class="fa fa-pencil fa-fw"></i>Editar
+         </a>
+         <a href="/Autor/eliminar/{{posts.IdAutor}}">
+         <i class="fa fa-trash-o fa-fw"></i>Eliminar
+         </a>
+      </td>
+      {% endif %}
+   </tr>
+   {% endfor %}
+</table>
+</div>
 {% endblock %}

@@ -9,28 +9,34 @@
       <h4 id="Titulo">Buscar Libro:</h4>
       <form method="POST"><input type="text" name="busqueda" />
         <input type="submit" value="Buscar" /></form>
-  {% for post in posts %}
-    <div class="row post">
-      <div class="col-md-6">
-        <h4>{{post.NombreLibro}}</h4>
+  
+        <table class="table">
+          <tr>
+             <th >El nombre del libro es  </th>
+             <th >Fecha de escritura del libro  </th>
+             <th >Autor </th>
+             <th >N° de libro  </th>
+             <th >Epigrafe del libro  </th>
+          </tr>
+          {% for posts in posts %}
+          <tr>
+        <td>{{posts.NombreLibro}}</td>
+        <td>{{posts.Fecha_creacion}}</td>
+        <td>{{posts.UserID}}</td>
+        <td>{{posts.IdLibro}}</td>
+        <td>{{posts.Epigrafe}}</td>
+            {% if session['email'] == posts.UserID %}
+            <td>
+               <a href="/Libros/editar/{{posts.IdLibro}}">
+               <i class="fa fa-pencil fa-fw"></i>Editar
+               </a>
+               <a href="/Libros/eliminar/{{posts.IdLibro}}">
+               <i class="fa fa-trash-o fa-fw"></i>Eliminar
+               </a>
+            </td>
+            {% endif %}
+         </tr>
+         {% endfor %}
+      </table>
       </div>
-      <div class="col-md-6 text-right">
-        <h5>Fecha de escritura del libro: {{post.Fecha_creacion}}</h5>
-      </div>
-		<div class="col-md-6 text-right">
-        <h5>Autor: {{post.UserID}}</h5>
-        <h5>N° de libro: {{post.IdLibro}}</h5>
-      </div>
-      <div class="col-md-12">
-        <p>{{post.Epigrafe}}</p>
-      </div>
-      <div class="col-md-12 acciones">
-        {% if session['email'] == post.UserID %}
-        <a href="/Libros/editar/{{post.IdLibro}}"><i class="fa fa-pencil fa-fw"></i>Editar</a>
-        <a href="/Libros/eliminar/{{post.IdLibro}}"><i class="fa fa-trash-o fa-fw"></i>Eliminar</a>
-        {% endif %}
-      </div>
-        
-    </div>
-  {% endfor%}
-{% endblock %}
+  {% endblock %}
